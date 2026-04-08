@@ -617,6 +617,95 @@ body{
   animation: waPulse 2.8s infinite;
 }
 
+.page-section{
+  animation: fadeIn .3s ease;
+}
+
+@keyframes fadeIn{
+  from{opacity:0; transform:translateY(10px);}
+  to{opacity:1; transform:translateY(0);}
+}
+
+.page-section{
+  display:none;
+}
+
+#hero{
+  display:block;
+}
+
+nav a{
+  position: relative;
+}
+
+nav a::after{
+  content:"";
+  position:absolute;
+  left:0;
+  bottom:-6px;
+  width:0%;
+  height:2px;
+  background:#E07A24;
+  transition:.3s;
+}
+
+nav a:hover::after{
+  width:100%;
+}
+
+nav a.active{
+  color: #E07A24;
+}
+
+nav a.active::after{
+  width: 100%;
+}
+
+/* ===== FIX SCROLL CHAT ===== */
+.chat-box{
+  display:flex;
+  flex-direction:column;
+  height:420px; /* tinggi fix biar stabil */
+}
+
+.chat-body{
+  flex:1;
+  overflow-y:auto;
+  scroll-behavior:smooth;
+  padding-right:6px;
+}
+
+/* custom scrollbar biar keren */
+.chat-body::-webkit-scrollbar{
+  width:6px;
+}
+.chat-body::-webkit-scrollbar-thumb{
+  background:#E07A24;
+  border-radius:10px;
+}
+
+/* ===== FIX HEADER AGAR TIDAK KETIMPA ===== */
+.chat-head{
+  position:sticky;
+  top:0;
+  z-index:10;
+}
+
+/* ===== FIX INPUT AREA ===== */
+.chat-box .p-3{
+  position:sticky;
+  bottom:0;
+  background:white;
+  z-index:10;
+}
+
+/* ===== BIAR TOMBOL CLOSE SELALU BISA DIKLIK ===== */
+.chat-head button{
+  position:relative;
+  z-index:20;
+  cursor:pointer;
+}
+
 </style>
 </head>
 
@@ -637,15 +726,56 @@ body{
   </div>
 </div>
 
-<div class="hidden md:flex gap-3 text-sm">
-<a class="px-5 py-2 bg-gray-100 rounded-full">FAQ Sensus</a>
+<nav class="hidden md:flex items-center gap-8 text-[15px] font-semibold text-gray-700">
 
+<a href="#" onclick="showPage('hero')" class="nav-link hover:text-orange-600 transition">
+  Beranda
+</a>
+
+<a href="#" onclick="showPage('jadwal')" class="nav-link hover:text-orange-600 transition">
+  Jadwal
+</a>
+
+<a href="#" onclick="showPage('dashboard')" class="nav-link hover:text-orange-600 transition">
+  Dashboard
+</a>
+
+<a href="#" onclick="showPage('galeri')" class="nav-link hover:text-orange-600 transition">
+  Galeri
+</a>
+
+  <!-- DROPDOWN SELENGKAPNYA -->
+  <div class="relative group">
+
+    <button class="flex items-center gap-1 hover:text-orange-600 transition">
+      Selengkapnya
+      <i class="fas fa-chevron-down text-xs mt-[2px]"></i>
+    </button>
+
+<div class="absolute top-full left-0 pt-2 w-56">
+  <div class="bg-white rounded-xl shadow-xl opacity-0 invisible
+              group-hover:opacity-100 group-hover:visible
+              transition duration-200">
+
+<a href="#" onclick="showPage('informasi-sensus')" class="nav-link block px-5 py-3 hover:bg-orange-50">
+  Informasi Sensus
+</a>
+
+    <a href="#" onclick="showPage('informasi-pendukung')" class="nav-link block px-5 py-3 hover:bg-orange-50">
+      Informasi Pendukung
+    </a>
+
+  </div>
 </div>
+
+  </div>
+
+</nav>
 </div>
 </header>
 
 <!-- ================= HERO ================= -->
-<section class="bg-filosofi">
+<section id="hero" class="page-section bg-filosofi">
 
 <!-- ===== BANNER FULL WIDTH (INI YANG DIPERBAIKI) ===== -->
 <div class="max-w-6xl mx-auto px-20 pt-24 banner-wrap">
@@ -747,7 +877,7 @@ body{
 </section>
 
 <!-- ===== HERO CONTENT (TETAP) ===== -->
-<section class="section bg-white bg-motif">
+<section id="jadwal" class="page-section section bg-white bg-motif">
 
 <div class="max-w-6xl mx-auto px-6 py-16 section grid md:grid-cols-2 gap-10 items-center">
 
@@ -788,7 +918,7 @@ Jadwal Pelaksanaan SE2026
 </section>
 
 <!-- ================= APA ITU ================= -->
-<section class="section text-white" style="background:var(--bps-orange)">
+<section id="informasi-sensus" class="page-section section text-white" style="background:var(--bps-orange)">
 <div class="max-w-6xl mx-auto px-6 text-center">
 
 <h2 class="h2 mb-5">Apa itu Sensus Ekonomi?</h2>
@@ -823,7 +953,7 @@ Sensus Ekonomi merupakan program pemerintah untuk menyediakan
 </section>
 
 <!-- ================= PENTING ================= -->
-<section class="section -mt-16">
+<section id="manfaat" class="page-section section -mt-16">
   <div class="max-w-7xl mx-auto px-6">
 
     <!-- Judul -->
@@ -892,6 +1022,7 @@ Sensus Ekonomi merupakan program pemerintah untuk menyediakan
 
   </div>
 </section>
+
 @php
 $selesai = 0;
 $proses = 0;
@@ -921,7 +1052,7 @@ $totalWilayah = count(array_unique($wilayahList));
 @endphp
 
 <!-- ================= DASHBOARD ================= -->
-<section class="py-16 bg-white bg-motif">
+<section id="dashboard" class="page-section py-16 bg-white bg-motif">
 <div class="max-w-7xl mx-auto px-6">
 
 <h2 class="text-3xl font-bold text-center mb-14 text-slate-800">
@@ -1098,7 +1229,7 @@ $totalWilayah = count(array_unique($wilayahList));
 </section>
 
 <!-- ================= GALERI INFORMASI ================= -->
-<section class="section" style="background:var(--bps-cream)">
+<section id="galeri" class="page-section section" style="background:var(--bps-cream)">
   <div class="max-w-6xl mx-auto px-6">
 
     <h2 class="h2 text-center mb-14">
@@ -1137,7 +1268,7 @@ $totalWilayah = count(array_unique($wilayahList));
 </section>
 
 <!-- ================= DOKUMENTASI KEGIATAN ================= -->
-<section class="section bg-white bg-motif">
+<section id="dokumentasi" class="page-section section bg-white bg-motif">
   <div class="max-w-6xl mx-auto px-6">
 
     <h2 class="h2 text-center mb-6">
@@ -1266,7 +1397,7 @@ $totalWilayah = count(array_unique($wilayahList));
   </div>
 </section>
 
-<section class="section bg-white bg-motif">
+<section class="page-section section bg-white bg-motif" id="informasi-pendukung">
   <div class="max-w-6xl mx-auto px-6">
 
     <div class="text-center mb-14">
@@ -1367,7 +1498,7 @@ $totalWilayah = count(array_unique($wilayahList));
 </section>
 
 <!-- ================= KONTAK ================= -->
-<section style="background:var(--bps-orange-dark)" class="text-white section py-16">
+<section id="kontak" class="text-white section py-16" style="background:var(--bps-orange-dark)">
 <div class="max-w-6xl mx-auto px-6 grid md:grid-cols-2 gap-16 items-center">
 
 <!-- KOLOM KIRI -->
@@ -1489,7 +1620,7 @@ class="w-80 md:w-[420px] lg:w-[480px] object-contain drop-shadow-xl hover:scale-
   </div>
 </div>
 
-<div id="chatBody" class="flex-1 p-4 overflow-y-auto space-y-2">
+<div id="chatBody" class="chat-body flex-1 p-4 space-y-2">
 <div class="msg bot">
 Halo! Saya Bung Itung. Siap membantu pertanyaan Sensus Ekonomi 2026.
 </div>
@@ -1521,12 +1652,16 @@ c.style.display = (c.style.display==='flex') ? 'none' : 'flex';
 }
 
 function addMsg(t,type){
-let b=document.getElementById('chatBody');
-let d=document.createElement('div');
-d.className='msg '+type;
-d.innerText=t;
-b.appendChild(d);
-b.scrollTop=b.scrollHeight;
+  let b=document.getElementById('chatBody');
+  let d=document.createElement('div');
+  d.className='msg '+type;
+  d.innerText=t;
+  b.appendChild(d);
+
+  // auto scroll ke bawah
+  setTimeout(()=>{
+    b.scrollTop = b.scrollHeight;
+  },50);
 }
 
 function norm(t){
@@ -1794,7 +1929,54 @@ async function loadDashboard() {
   }
 }
 
+function showPage(id){
+
+  // ===== RESET ACTIVE NAV =====
+  document.querySelectorAll('.nav-link').forEach(link=>{
+    link.classList.remove('active');
+  });
+
+  // ===== SET ACTIVE =====
+  const activeLink = document.querySelector(`[onclick="showPage('${id}')"]`);
+  if(activeLink){
+    activeLink.classList.add('active');
+  }
+
+  // ===== SEMBUNYIKAN SEMUA =====
+  document.querySelectorAll('.page-section').forEach(sec=>{
+    sec.style.display = 'none';
+  });
+
+  // ===== TAMPILKAN =====
+  if(id === 'hero'){
+    document.getElementById('hero').style.display = 'block';
+  }
+  else if(id === 'jadwal'){
+    document.getElementById('jadwal').style.display = 'block';
+  }
+  else if(id === 'informasi-sensus'){
+  document.getElementById('informasi-sensus').style.display = 'block';
+  document.getElementById('manfaat').style.display = 'block'; // ✅ TAMBAHAN
+}
+  else{
+    const el = document.getElementById(id);
+    if(el) el.style.display = 'block';
+
+    if(id === 'galeri'){
+      document.getElementById('dokumentasi').style.display = 'block';
+    }
+  }
+
+  document.getElementById('kontak').style.display = 'block';
+
+  window.scrollTo({ top:0, behavior:'smooth' });
+}
+
 document.addEventListener("DOMContentLoaded", function(){
+
+  // langsung set beranda + active
+  showPage('hero');
+
   loadDashboard();
 });
 
