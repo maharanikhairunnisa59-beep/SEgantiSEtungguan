@@ -53,7 +53,7 @@ animation:slideX 30s linear infinite;
 }
 
 .slider-pill{
-min-width:320px;
+min-width:70%;
 background:#f3f4f6;
 border-radius:999px;
 padding:16px 28px;
@@ -275,20 +275,21 @@ border-radius:999px;
 }
 
 .bung-itung{
-  position:absolute;
-  bottom: -20px;
-  width:230px;
+position:absolute;
+bottom:-20px;
+width:230px;
+max-width:40vw;
   z-index:6;
   filter: drop-shadow(0 14px 28px rgba(0,0,0,.3));
   transition:.35s ease;
 }
 
 .bung-itung.left{
-  left:-70px;
+  left:-50px;
 }
 
 .bung-itung.right{
-  right:-70px;
+  right:-50px;
   transform:scaleX(-1); /* biar saling hadap */
 }
 
@@ -409,7 +410,8 @@ border-radius:999px;
 
 /* ===== BUNG ITUNG TENGAH (FILOSOFI) ===== */
 .bung-itung-center{
-  width: 360px;              /* default desktop */
+width:100%;
+max-width:360px;
   transform: translateY(-10px);
   filter: drop-shadow(0 26px 46px rgba(0,0,0,.35));
   transition: transform .35s ease;
@@ -706,79 +708,168 @@ nav a.active::after{
   cursor:pointer;
 }
 
+html, body{
+overflow-x:hidden;
+}
+
+img{
+max-width:100%;
+height:auto;
+}
+
+iframe{
+max-width:100%;
+}
+
+.container{
+max-width:100%;
+}
+
+.mobile-link {
+  padding: 10px 12px;
+  border-radius: 8px;
+  transition: 0.2s;
+}
+
+.mobile-link:hover {
+  background: #fff7ed; /* orange muda */
+}
+
+.mobile-link.active {
+  background: #fff7ed;
+  color: #ea580c;
+  border-left: 4px solid #ea580c;
+  padding-left: 8px;
+}
+
 </style>
 </head>
 
 <body>
 
 <!-- ================= HEADER ================= -->
-<header class="bg-white sticky top-0 z-50 border-b border-gray-200">
-<div class="max-w-6xl mx-auto px-6 flex justify-between items-center h-[88px]">
-<div class="flex items-center gap-4">
-  <img src="/images/logo_bps1.png" class="h-12">
-  <div class="leading-tight">
-    <div class="font-semibold text-gray-800 text-sm">
-      BADAN PUSAT STATISTIK
+<header class="bg-white sticky top-0 z-[9999] border-b border-gray-200">
+
+  <div class="max-w-7xl mx-auto px-4 md:px-6 flex items-center h-[80px]">
+
+    <!-- KIRI: LOGO -->
+    <div class="flex items-center gap-3 flex-1">
+      <img src="/images/logo_bps1.png" class="h-10 md:h-12">
+
+      <div class="leading-tight">
+        <div class="font-semibold text-gray-800 text-xs md:text-sm">
+          BADAN PUSAT STATISTIK
+        </div>
+        <div class="text-[11px] md:text-xs text-gray-500 tracking-wide">
+          KABUPATEN LAHAT
+        </div>
+      </div>
     </div>
-    <div class="text-xs text-gray-500 tracking-wide">
-      KABUPATEN LAHAT
-    </div>
-  </div>
+
+    <!-- NAV DESKTOP -->
+    <nav class="hidden md:flex items-center justify-center gap-8 font-semibold text-gray-700 text-sm flex-1">
+
+      <a href="#" onclick="showPage('hero')" class="nav-link hover:text-orange-600">
+        Beranda
+      </a>
+
+      <a href="#" onclick="showPage('jadwal')" class="nav-link hover:text-orange-600">
+        Jadwal
+      </a>
+
+      <a href="#" onclick="showPage('dashboard')" class="nav-link hover:text-orange-600">
+        Dashboard
+      </a>
+
+      <a href="#" onclick="showPage('galeri')" class="nav-link hover:text-orange-600">
+        Galeri
+      </a>
+
+      <!-- DROPDOWN -->
+      <div class="relative">
+
+        <button onclick="toggleDropdown()" class="flex items-center gap-1 hover:text-orange-600">
+          Selengkapnya
+          <i class="fas fa-chevron-down text-xs"></i>
+        </button>
+
+        <div id="dropdownMenu"
+          class="absolute right-0 mt-3 w-56 bg-white rounded-xl shadow-xl hidden z-50 border">
+
+          <a href="#" onclick="showPage('informasi-sensus'); closeDropdown();"
+            class="block px-5 py-3 hover:bg-orange-50">
+            Informasi Sensus
+          </a>
+
+          <a href="#" onclick="showPage('informasi-pendukung'); closeDropdown();"
+            class="block px-5 py-3 hover:bg-orange-50">
+            Informasi Pendukung
+          </a>
+
+        </div>
+      </div>
+
+    </nav>
+
+    <!-- HAMBURGER MOBILE -->
+<div class="flex-1 flex justify-end">
+  <button onclick="toggleDrawer()"
+    class="md:hidden text-2xl text-gray-700 relative z-[999]">
+    <i class="fas fa-bars"></i>
+  </button>
 </div>
 
-<nav class="hidden md:flex items-center gap-8 text-[15px] font-semibold text-gray-700">
+  <!-- ===== DRAWER MOBILE ===== -->
+<div id="drawer"
+class="fixed top-0 right-0 w-[280px] h-full bg-white shadow-2xl z-[999]
+translate-x-full transition-transform duration-300">
 
-<a href="#" onclick="showPage('hero')" class="nav-link hover:text-orange-600 transition">
-  Beranda
-</a>
+  <!-- HEADER -->
+  <div class="flex justify-between items-center p-5 border-b">
+    <span class="font-bold text-gray-700">Menu</span>
+    <button onclick="closeDrawer()">✕</button>
+  </div>
 
-<a href="#" onclick="showPage('jadwal')" class="nav-link hover:text-orange-600 transition">
-  Jadwal
-</a>
+  <!-- MENU -->
+  <div class="flex flex-col p-5 space-y-4 font-semibold text-gray-700">
 
-<a href="#" onclick="showPage('dashboard')" class="nav-link hover:text-orange-600 transition">
-  Dashboard
-</a>
+<a href="#" onclick="setActive(this); showPage('hero'); closeDrawer()"
+  class="mobile-link">Beranda</a>
 
-<a href="#" onclick="showPage('galeri')" class="nav-link hover:text-orange-600 transition">
-  Galeri
-</a>
+<a href="#" onclick="setActive(this); showPage('jadwal'); closeDrawer()"
+  class="mobile-link">Jadwal</a>
 
-  <!-- DROPDOWN SELENGKAPNYA -->
-  <div class="relative group">
+<a href="#" onclick="setActive(this); showPage('dashboard'); closeDrawer()"
+  class="mobile-link">Dashboard</a>
 
-    <button class="flex items-center gap-1 hover:text-orange-600 transition">
+<a href="#" onclick="setActive(this); showPage('galeri'); closeDrawer()"
+  class="mobile-link">Galeri</a>
+
+    <div class="border-t pt-4 mt-2 text-sm text-gray-500">
       Selengkapnya
-      <i class="fas fa-chevron-down text-xs mt-[2px]"></i>
-    </button>
+    </div>
 
-<div class="absolute top-full left-0 pt-2 w-56">
-  <div class="bg-white rounded-xl shadow-xl opacity-0 invisible
-              group-hover:opacity-100 group-hover:visible
-              transition duration-200">
+<a href="#" onclick="setActive(this); showPage('informasi-sensus'); closeDrawer()"
+  class="mobile-link">Informasi Sensus</a>
 
-<a href="#" onclick="showPage('informasi-sensus')" class="nav-link block px-5 py-3 hover:bg-orange-50">
-  Informasi Sensus
-</a>
-
-    <a href="#" onclick="showPage('informasi-pendukung')" class="nav-link block px-5 py-3 hover:bg-orange-50">
-      Informasi Pendukung
-    </a>
+<a href="#" onclick="setActive(this); showPage('informasi-pendukung'); closeDrawer()"
+  class="mobile-link">Informasi Pendukung</a>
 
   </div>
 </div>
 
-  </div>
+<!-- OVERLAY -->
+<div id="drawerOverlay"
+class="fixed inset-0 bg-black/40 hidden z-[998]"
+onclick="closeDrawer()"></div>
 
-</nav>
-</div>
 </header>
 
 <!-- ================= HERO ================= -->
 <section id="hero" class="page-section bg-filosofi">
 
 <!-- ===== BANNER FULL WIDTH (INI YANG DIPERBAIKI) ===== -->
-<div class="max-w-6xl mx-auto px-20 pt-24 banner-wrap">
+<div class="max-w-6xl mx-auto px-4 md:px-20 pt-12 md:pt-24 banner-wrap">
 
   <!-- Bung Itung Kiri -->
   <img
@@ -789,7 +880,7 @@ nav a.active::after{
   <!-- Banner Utama -->
   <img
     src="/images/banner_se2026_lahat.png"
-    class="w-full rounded-3xl shadow-2xl relative z-10">
+    class="w-full max-w-full h-auto rounded-3xl shadow-2xl relative z-10">
 
   <!-- Bung Itung Kanan -->
   <img
@@ -835,11 +926,11 @@ nav a.active::after{
 </section>
 
     <!-- GRID ICON + KATA -->
-    <div class="relative grid md:grid-cols-3 gap-1 items-center -mt-3">
+<div class="relative grid grid-cols-1 md:grid-cols-3 gap-6 items-center -mt-3 text-center md:text-left">
 
       <!-- KIRI -->
-      <div class="text-right space-y-3">
-        <h3 class="font-extrabold text-orange-600 filosofi-title">
+      <div class="space-y-3 md:text-right text-center">
+        <h3 class="font-extrabold text-orange-600 filosofi-title text-2xl md:text-3xl">
           SEganti
         </h3>
 
@@ -854,13 +945,13 @@ nav a.active::after{
         <img
           src="/images/petugas_sensus.png"
           alt="Bung Itung"
-          class="bung-itung-center"
+          class="bung-itung-center mx-auto max-w-[220px] md:max-w-[320px]"
         >
       </div>
 
       <!-- KANAN -->
-      <div class="text-left space-y-3">
-        <h3 class="font-extrabold text-orange-600 filosofi-title">
+      <div class="space-y-3 md:text-left text-center">
+        <h3 class="font-extrabold text-orange-600 filosofi-title text-2xl md:text-3xl">
           SEtungguan
         </h3>
 
@@ -879,7 +970,7 @@ nav a.active::after{
 <!-- ===== HERO CONTENT (TETAP) ===== -->
 <section id="jadwal" class="page-section section bg-white bg-motif">
 
-<div class="max-w-6xl mx-auto px-6 py-16 section grid md:grid-cols-2 gap-10 items-center">
+<div class="max-w-6xl mx-auto px-4 md:px-6 py-16 section grid md:grid-cols-2 gap-10 items-center">
 
 <div class="space-y-8 flex flex-col justify-center">
 <h1 class="h1">
@@ -911,7 +1002,7 @@ Jadwal Pelaksanaan SE2026
 </div>
 
 <div>
-<img src="/images/hero_usaha.jpeg" class="rounded-3xl shadow-2xl">
+<img src="/images/hero_usaha.jpeg" class="w-full rounded-3xl shadow-2xl">
 </div>
 
 </div>
@@ -1287,7 +1378,7 @@ $totalWilayah = count(array_unique($wilayahList));
       <div class="card p-4">
         <iframe
           src="https://www.instagram.com/reel/DUR_iv9jyGN/embed"
-          class="w-full h-[420px] rounded-2xl"
+          class="w-full h-[380px] md:h-[420px] rounded-2xl"
           frameborder="0"
           scrolling="no"
           allowtransparency="true">
@@ -1301,7 +1392,7 @@ $totalWilayah = count(array_unique($wilayahList));
       <div class="card p-4">
         <iframe
           src="https://www.instagram.com/reel/DUABmyHj_eT/embed"
-          class="w-full h-[420px] rounded-2xl"
+          class="w-full h-[380px] md:h-[420px] rounded-2xl"
           frameborder="0"
           scrolling="no"
           allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share">
@@ -1315,7 +1406,7 @@ $totalWilayah = count(array_unique($wilayahList));
       <div class="card p-4">
         <iframe
           src="https://www.instagram.com/reel/DT9x_0bkfg-/embed"
-          class="w-full h-[420px] rounded-2xl"
+          class="w-full h-[380px] md:h-[420px] rounded-2xl"
           frameborder="0"
           scrolling="no"
           allowtransparency="true">
@@ -1340,7 +1431,7 @@ $totalWilayah = count(array_unique($wilayahList));
     <div class="card overflow-hidden">
       <img 
         src="{{ asset('images/FOTO_1.jpeg') }}"
-        class="w-full h-[260px] object-cover transition duration-500 hover:scale-105"
+        class="w-full h-[220px] md:h-[260px] object-cover transition duration-500 hover:scale-105"
         alt="Sosialisasi SE2026">
       <p class="text-center py-3 text-sm font-semibold text-gray-600">
         Ground Check Pasar Lama
@@ -1351,7 +1442,7 @@ $totalWilayah = count(array_unique($wilayahList));
     <div class="card overflow-hidden">
       <img 
         src="{{ asset('images/FOTO_2.jpeg') }}"
-        class="w-full h-[260px] object-cover transition duration-500 hover:scale-105"
+        class="w-full h-[220px] md:h-[260px] object-cover transition duration-500 hover:scale-105"
         alt="Pendataan SE2026">
       <p class="text-center py-3 text-sm font-semibold text-gray-600">
         Ground Check Citimall
@@ -1362,7 +1453,7 @@ $totalWilayah = count(array_unique($wilayahList));
     <div class="card overflow-hidden">
       <img 
         src="{{ asset('images/FOTO_3.jpeg') }}"
-        class="w-full h-[260px] object-cover transition duration-500 hover:scale-105"
+        class="w-full h-[220px] md:h-[260px] object-cover transition duration-500 hover:scale-105"
         alt="Rakor SE2026">
       <p class="text-center py-3 text-sm font-semibold text-gray-600">
         Ground Check Manggul
@@ -1567,7 +1658,7 @@ class="w-12 h-12 bg-red-600 rounded-full flex items-center justify-center shadow
 <img
 src="/images/bung_itung.png"
 alt="Bung Itung"
-class="w-80 md:w-[420px] lg:w-[480px] object-contain drop-shadow-xl hover:scale-105 transition duration-300"
+class="w-64 md:w-[420px] lg:w-[480px] object-contain drop-shadow-xl hover:scale-105 transition duration-300"
 />
 
 </div>
@@ -1979,6 +2070,53 @@ document.addEventListener("DOMContentLoaded", function(){
 
   loadDashboard();
 });
+
+// ===== DROPDOWN DESKTOP (BIARKAN) =====
+function toggleDropdown() {
+  const menu = document.getElementById("dropdownMenu");
+
+  if (menu.classList.contains("hidden")) {
+    menu.classList.remove("hidden");
+  } else {
+    menu.classList.add("hidden");
+  }
+}
+
+function closeDropdown(){
+  document.getElementById("dropdownMenu").classList.add("hidden");
+}
+
+
+// ===== DRAWER MOBILE (TAMBAHKAN DI BAWAH) =====
+function toggleDrawer() {
+  const drawer = document.getElementById("drawer");
+  const overlay = document.getElementById("drawerOverlay");
+
+  if (!drawer || !overlay) return; // ⛑️ anti error
+
+  drawer.classList.toggle("translate-x-full");
+  overlay.classList.toggle("hidden");
+}
+
+function closeDrawer() {
+  const drawer = document.getElementById("drawer");
+  const overlay = document.getElementById("drawerOverlay");
+
+  if (!drawer || !overlay) return;
+
+  drawer.classList.add("translate-x-full");
+  overlay.classList.add("hidden");
+}
+
+function setActive(el) {
+  const links = document.querySelectorAll(".mobile-link");
+
+  links.forEach(link => {
+    link.classList.remove("active");
+  });
+
+  el.classList.add("active");
+}
 
 </script>
 
