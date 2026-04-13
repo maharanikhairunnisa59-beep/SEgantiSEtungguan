@@ -71,10 +71,23 @@
 
 </button>
 
-<button onclick="exportExcel()"
+<button id="btnExcel"
+  onclick="exportExcel()"
   class="bg-green-600 hover:bg-green-700 text-white px-5 py-2 rounded-lg font-semibold shadow flex items-center gap-2">
 
-  📊 Download Excel
+  <span id="btnExcelText">📊 Download Excel</span>
+
+  <svg id="btnExcelSpinner"
+       class="hidden animate-spin h-4 w-4 text-white"
+       xmlns="http://www.w3.org/2000/svg"
+       fill="none"
+       viewBox="0 0 24 24">
+    <circle class="opacity-25" cx="12" cy="12" r="10"
+            stroke="currentColor" stroke-width="4"></circle>
+    <path class="opacity-75" fill="currentColor"
+          d="M4 12a8 8 0 018-8v8z"></path>
+  </svg>
+
 </button>
 
 </div>
@@ -309,36 +322,74 @@ async function showTab(evt, tabId){
   }
 }
 
-function exportExcel(){
+async function exportExcel(){
 
-  const activeTab = document.querySelector(".tab:not(.hidden)");
-  if(!activeTab){
-    alert("Tidak ada data untuk di export");
-    return;
+  setExcelLoading(true);
+
+  try{
+
+    const activeTab = document.querySelector(".tab:not(.hidden)");
+
+    if(!activeTab){
+      alert("Tidak ada data");
+      return;
+    }
+
+    let tables = activeTab.querySelectorAll("table");
+
+    if(!tables.length){
+      alert("Tabel tidak ditemukan");
+      return;
+    }
+
+    let html = "";
+
+    tables.forEach(t => {
+      html += t.outerHTML + "<br><br>";
+    });
+
+    // 🔥 kasih delay biar loading kelihatan smooth
+    await new Promise(resolve => setTimeout(resolve, 800));
+
+    let url = 'data:application/vnd.ms-excel,' + encodeURIComponent(html);
+
+    let a = document.createElement("a");
+
+    let tabName = activeTab.id || "Dashboard";
+    tabName = tabName.charAt(0).toUpperCase() + tabName.slice(1);
+
+    a.href = url;
+    a.download = `Dashboard_${tabName}_SE2026.xls`;
+
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+
+  }catch(err){
+    console.error(err);
+    alert("Gagal export Excel");
   }
 
-  let table = activeTab.querySelector("table");
+  setExcelLoading(false);
+}
 
-  if(!table){
-    alert("Tabel tidak ditemukan");
-    return;
+function setExcelLoading(isLoading){
+
+  const btn = document.getElementById("btnExcel");
+  const text = document.getElementById("btnExcelText");
+  const spinner = document.getElementById("btnExcelSpinner");
+
+  if(isLoading){
+    btn.disabled = true;
+    btn.classList.add("opacity-70","cursor-not-allowed");
+    text.innerText = "Memproses...";
+    spinner.classList.remove("hidden");
+  } else {
+    btn.disabled = false;
+    btn.classList.remove("opacity-70","cursor-not-allowed");
+    text.innerText = "📊 Download Excel";
+    spinner.classList.add("hidden");
   }
-
-  let html = table.outerHTML;
-
-  // Format Excel
-  let url = 'data:application/vnd.ms-excel,' + encodeURIComponent(html);
-
-  let a = document.createElement("a");
-  a.href = url;
-
-  let tabName = activeTab.id || "Dashboard";
-  tabName = tabName.charAt(0).toUpperCase() + tabName.slice(1);
-
-  a.download = `Dashboard_${tabName}_SE2026.xls`;
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
 }
 
 </script>
