@@ -71,6 +71,12 @@
 
 </button>
 
+<button onclick="exportExcel()"
+  class="bg-green-600 hover:bg-green-700 text-white px-5 py-2 rounded-lg font-semibold shadow flex items-center gap-2">
+
+  📊 Download Excel
+</button>
+
 </div>
 
   <!-- TAB MENU -->
@@ -301,6 +307,38 @@ async function showTab(evt, tabId){
 
     hideLoading();
   }
+}
+
+function exportExcel(){
+
+  const activeTab = document.querySelector(".tab:not(.hidden)");
+  if(!activeTab){
+    alert("Tidak ada data untuk di export");
+    return;
+  }
+
+  let table = activeTab.querySelector("table");
+
+  if(!table){
+    alert("Tabel tidak ditemukan");
+    return;
+  }
+
+  let html = table.outerHTML;
+
+  // Format Excel
+  let url = 'data:application/vnd.ms-excel,' + encodeURIComponent(html);
+
+  let a = document.createElement("a");
+  a.href = url;
+
+  let tabName = activeTab.id || "Dashboard";
+  tabName = tabName.charAt(0).toUpperCase() + tabName.slice(1);
+
+  a.download = `Dashboard_${tabName}_SE2026.xls`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
 }
 
 </script>
